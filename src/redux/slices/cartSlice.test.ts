@@ -37,7 +37,6 @@ describe("cartSlice", () => {
 
         const result = cartSlice.reducer(initialState, addProductToCart(product));
         expect(result.value).toEqual([product]);
-
     });
 
     it("removes a product from the cart", () => {

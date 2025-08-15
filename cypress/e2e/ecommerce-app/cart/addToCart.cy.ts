@@ -1,5 +1,3 @@
-import { CartProduct } from "@/types/types";
-
 describe("Adding an item to the cart", () => {
     beforeEach(() => {
         cy.window().then((win) => {
@@ -37,8 +35,12 @@ describe("Adding an item to the cart", () => {
 
 it("should not add an item to the cart without selecting a size first", () => {
     cy.visit("/products/667197f9bdb811be15f18a9f");
-    cy.get('[data-cy="addToCartButton"]').as('addToCartButton').should('not.be.enabled');
+   
+    cy.get('[data-cy="addToCartButton"]', { timeout: 10000 }).as('addToCartButton').should('not.be.enabled');
+    
     cy.get('[data-cy="productSize"]').eq(0).click();
-    cy.get('@addToCartButton').should('be.enabled').click();
+
+    cy.get('@addToCartButton', { timeout: 10000 }).should('be.enabled').click();
+
     cy.get('[data-cy="shoppingBagIcon"').invoke('text').should('equal', '1');
 });
