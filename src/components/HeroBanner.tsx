@@ -14,15 +14,17 @@ export default function HeroBanner() {
 
     return (
         <div className="mb-5 h-full relative">
-
+        
             <div className="relative h-120">
                 <div className={`absolute top-0 left-0 w-full h-full transition duration-800 opacity-0 z-0 ${containerIndex === 0 && 'opacity-100 z-10'}`}>
                     <HeroBannerImageContainer
-                        imageUrl={"https://reactecommerceapp.blob.core.windows.net/images/martin-katler-1kOIl9vu4cY-unsplash(1).jpg"}
+                        imageUrl={"https://reactecommerceapp.blob.core.windows.net/images/pexels-melvin-buezo-1253763-2529148.jpg"}
                         productLink={"/products/category/athletic"}
                         productTitle={"Athletic Shoes"}
                         imageAlt={"Athletic shoes"}
-                        isLCP={true} />
+                        isLCP={true}
+                        discount="60"
+                        />
                 </div>
 
                 <div className={`absolute top-0 left-0 w-full h-full transition duration-800 opacity-0 z-0 ${containerIndex === 1 && 'opacity-100 z-10'}`}>
@@ -31,9 +33,10 @@ export default function HeroBanner() {
                         productLink={"/products/category/boots"}
                         productTitle={"Boots"}
                         imageAlt={"Boots"}
-                        isLCP={false} />
+                        isLCP={false}
+                        discount="50"
+                        />
                 </div>
-
 
                 <div className={`absolute top-0 left-0 w-full h-full transition duration-800 opacity-0 z-0 ${containerIndex === 2 && 'opacity-100 z-10'}`}>
                     <HeroBannerImageContainer
@@ -41,14 +44,16 @@ export default function HeroBanner() {
                         productLink={"/products/category/shoes"}
                         productTitle={"Shoes"}
                         imageAlt={"Shoes"}
-                        isLCP={false} />
+                        isLCP={false} 
+                        discount="30"
+                        />
                 </div>
             </div>
 
-            <div className="absolute bottom-2 left-1/2 flex flex-row gap-2 z-10">
-                <div className={`rounded-[100%] w-3 h-3 cursor-pointer border ${containerIndex === 0 ? 'bg-black border-gray-200' : 'bg-white border-black'} `} onClick={() => setContainerIndex(0)}></div>
-                <div className={`rounded-[100%] w-3 h-3 cursor-pointer border ${containerIndex === 1 ? 'bg-black border-gray-200' : 'bg-white border-black'} `} onClick={() => setContainerIndex(1)}></div>
-                <div className={`rounded-[100%] w-3 h-3 cursor-pointer border ${containerIndex === 2 ? 'bg-black border-gray-200' : 'bg-white border-black'} `} onClick={() => setContainerIndex(2)}></div>
+            <div className="absolute bottom-4 left-1/2 flex flex-row gap-2 z-10">
+                <button type="button" aria-label="Athletic shoes product display button" className={`rounded-[100%] w-3 h-3 cursor-pointer border ${containerIndex === 0 ? 'bg-gray-950 border-gray-200' : 'bg-white border-gray-950'} `} onClick={() => setContainerIndex(0)}></button>
+                <button type="button" aria-label="Boots product display button" className={`rounded-[100%] w-3 h-3 cursor-pointer border ${containerIndex === 1 ? 'bg-gray-950 border-gray-200' : 'bg-white border-gray-950'} `} onClick={() => setContainerIndex(1)}></button>
+                <button type="button" aria-label="Shoes product display button" className={`rounded-[100%] w-3 h-3 cursor-pointer border ${containerIndex === 2 ? 'bg-gray-950 border-gray-200' : 'bg-white border-gray-950'} `} onClick={() => setContainerIndex(2)}></button>
             </div>
         </div>
     );

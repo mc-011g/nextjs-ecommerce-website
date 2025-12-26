@@ -3,7 +3,7 @@
 import { fetchSearchResults } from "@/util/fetchSearchResults";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { ShoppingBagIcon } from "@heroicons/react/24/outline";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
@@ -17,26 +17,19 @@ import { getCart, getUser } from "@/redux/selectors";
 import { Product } from "@/types/types";
 
 export default function Navbar() {
-    const user = useSelector(getUser) || [];
-
-    const memoizedUser = useMemo(() => {    
-        return user;
-    }, [user]);
-    
+    const user = useSelector(getUser);
     const cart = useSelector(getCart) || [];
     const cartQuantity = cart.reduce((total, item) => total + item.quantity, 0);
 
     const [displaySearchResults, setDisplaySearchResults] = useState(false);
     const [searchResults, setSearchResults] = useState<Product[]>([]);
     const [searchText, setSearchText] = useState<string>("");
+
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-
     const [loadingSearchResults, setLoadingSearchResults] = useState<boolean | null>(null);
-
     const [displayCollapseMenu, setDisplayCollapseMenu] = useState(false);
 
     const router = useRouter();
-
     const urlPathName = usePathname();
 
     useEffect(() => {
@@ -86,7 +79,7 @@ export default function Navbar() {
     useEffect(() => {
         const token = localStorage.getItem("token");
 
-        if ((memoizedUser && memoizedUser.isVerified) || token) {
+        if ((user && user.isVerified) || token) {
             if (!isLoggedIn) {
                 setIsLoggedIn(true);
             }
@@ -95,7 +88,7 @@ export default function Navbar() {
                 setIsLoggedIn(false);
             }
         }
-    }, [isLoggedIn, memoizedUser]);
+    }, [isLoggedIn, user]);
 
     const handleSubmitSearchResults = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
@@ -105,38 +98,41 @@ export default function Navbar() {
 
     return (
         <>
-            <div className="sticky top-0 bg-white text-black z-50">
-                <nav className="relative shadow-md" role="navigation">
-                    <div className="container mx-auto px-4 flex flex-row h-16 items-center justify-between">
-                        <Link className="text-xl font-extrabold" href="/" data-cy="websiteTitleNavLink" aria-current={urlPathName === "/" && "page"}>Ecommerce Website</Link>
+            <div className="sticky top-0 bg-white text-white z-50">
+                <nav className="relative shadow-md bg-gray-950" role="navigation">
+
+                    <div className="container mx-auto px-4 lg:px-8 flex flex-row h-[96px] items-center justify-between gap-4">
+                        <Link className="text-lg lg:text-2xl font-extrabold" href="/" data-cy="websiteTitleNavLink" aria-current={urlPathName === "/" && "page"}>
+                            Ecommerce Website
+                        </Link>
 
                         {displayCollapseMenu &&
-                            <div className="absolute left-0 top-16 bg-white b-2 mb-lg-0 w-full">
-                                <div className="flex flex-col font-semibold gap-2 p-4" aria-expanded={displayCollapseMenu} aria-hidden={!displayCollapseMenu} data-cy="collapsedNavLinkMenu">
-                                    <NavLink link="/products/category/shoes" data-cy="shoesNavLinkCollapsed" aria-current={urlPathName === "/products/category/shoes" && "page"}>Shoes</NavLink>
-                                    <NavLink link="/products/category/boots" data-cy="bootsNavLinkCollapsed" aria-current={urlPathName === "/products/category/boots" && "page"}>Boots</NavLink>
-                                    <NavLink link="/products/category/athletic" data-cy="athleticShoesNavLinkCollapsed" aria-current={urlPathName === "/products/category/atheltic" && "page"}>Athletic Shoes</NavLink>
+                            <div className="absolute md:hidden left-0 top-[80px] bg-gray-950 b-2 mb-lg-0 w-full md:flex flex-row gap-[32px]">
+                                <div className="flex flex-col container mx-auto gap-2 p-4" aria-expanded={displayCollapseMenu} aria-hidden={!displayCollapseMenu} data-cy="collapsedNavLinkMenu">
+                                    <NavLink link="/products/category/shoes" data-cy="shoesNavLinkCollapsed" aria-current={urlPathName === "/products/category/shoes" && "page"} onClick={() => setDisplayCollapseMenu(false)}>Shoes</NavLink>
+                                    <NavLink link="/products/category/boots" data-cy="bootsNavLinkCollapsed" aria-current={urlPathName === "/products/category/boots" && "page"} onClick={() => setDisplayCollapseMenu(false)}>Boots</NavLink>
+                                    <NavLink link="/products/category/athletic" data-cy="athleticShoesNavLinkCollapsed" aria-current={urlPathName === "/products/category/atheltic" && "page"} onClick={() => setDisplayCollapseMenu(false)}>Athletic Shoes</NavLink>
                                 </div>
                             </div>
                         }
 
-                        <div className="hidden md:flex flex-row gap-2 font-semibold absolute justify-center left-1/2 transform -translate-x-1/2">
-                            <NavLink link="/products/category/shoes" data-cy="shoesNavLink" aria-current={urlPathName === "/products/category/shoes" && "page"}>Shoes</NavLink>
+                        <div className="hidden md:flex flex-row gap-4 text-[24px]/24px lg:absolute justify-center lg:left-1/2 lg:transform lg:-translate-x-1/2">
+                            <NavLink link="/products/category/shoes" data-cy="shoesNavLink" aria-current={urlPathName === "/products/category/shoes" && "page"} >Shoes</NavLink>
                             <NavLink link="/products/category/boots" data-cy="bootsNavLink" aria-current={urlPathName === "/products/category/boots" && "page"}>Boots</NavLink>
                             <NavLink link="/products/category/athletic" data-cy="athleticShoesNavLink" aria-current={urlPathName === "/products/category/atheltic" && "page"}>Athletic Shoes</NavLink>
                         </div>
 
                         <div className="flex flex-row">
-                            <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            {/* <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                                 aria-expanded="false" aria-label="Toggle navigation" >
                                 <span className="navbar-toggler-icon"></span>
-                            </button>
+                            </button> */}
 
-                            <div className="flex flex-row justify-between gap-2">
-                                <div className="cursor-pointer" aria-current="page" onClick={() => { setDisplaySearchResults(!displaySearchResults); }} data-cy="searchBarIcon">
+                            <div className="flex flex-row justify-between gap-4">
+                                <button type="button" className="cursor-pointer" aria-current="page" aria-label="Search button" onClick={() => { setDisplaySearchResults(!displaySearchResults); }} data-cy="searchBarIcon">
                                     <MagnifyingGlassIcon className="w-6 h-6 " aria-label="Search products icon" />
-                                </div>
+                                </button>
                                 <Link
                                     href={`${(isLoggedIn ? "/profile" : "/login")}   `}
                                     className="cursor-pointer"
@@ -148,13 +144,18 @@ export default function Navbar() {
                                 <Link href="/cart" className="cursor-pointer" aria-current={urlPathName === "/cart" && "page"} data-cy="cartNavLink" aria-label="Cart">
                                     <div className="flex justify-center items-center relative">
                                         <ShoppingBagIcon className="w-6 h-6" />
-                                        <span className="cartQuantity absolute flex items-center justify-center text-xs top-2 font-bold" data-cy="shoppingBagIcon">
+                                        <span className="cartQuantity absolute flex items-center justify-center text-xs top-2 font-semibold" data-cy="shoppingBagIcon">
                                             {cartQuantity}
                                         </span>
                                     </div>
                                 </Link>
                                 <div className="md:hidden flex" >
-                                    <Bars3Icon className="w-6 h-6 cursor-pointer" onClick={() => setDisplayCollapseMenu(!displayCollapseMenu)} data-cy="collapsedMenuToggle" />
+
+                                    {!displayCollapseMenu ?
+                                        <Bars3Icon className="w-6 h-6 cursor-pointer" onClick={() => setDisplayCollapseMenu(!displayCollapseMenu)} data-cy="collapsedMenuToggle" />
+                                        :
+                                        <XMarkIcon className="size-6 cursor-pointer" onClick={() => setDisplayCollapseMenu(!displayCollapseMenu)} data-cy="collapsedMenuToggle" />
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -163,30 +164,37 @@ export default function Navbar() {
 
                 {displaySearchResults &&
                     <div
-                        className="absolute top-full left-0 w-full"
+                        className="absolute text-gray-950 top-full left-0 w-full"
                         role="dialog"
                         aria-labelledby="modal-title"
                         aria-modal="true"
                         aria-live="assertive"
                     >
-                        <div className="z-60 p-4 bg-white d-flex flex-column justify-content-center align-items-center shadow-xl" data-cy="searchResultsContainer">
-                            <div className="relative">
+                        <div className="z-60 bg-white d-flex flex-column justify-content-center align-items-center shadow-xl" data-cy="searchResultsContainer">
+                            <div className="relative container p-4 lg:p-8 mx-auto">
+
                                 <div className="flex flex-row justify-between items-center mb-4">
-                                    <span className="font-bold" id="modal-title">Search Results</span>
+                                    <span className="font-bold text-xl sm:text-2xl" id="modal-title">Search Results</span>
                                     <XMarkIcon
                                         className="w-8 h-8 cursor-pointer top-0 right-5"
                                         onClick={() => setDisplaySearchResults(!displaySearchResults)}
                                         aria-label="Close search results"
                                         data-cy="searchResultsCloseButton" />
                                 </div>
+
                                 <form onSubmit={handleSubmitSearchResults}>
                                     <div className="relative flex items-center w-full mb-4">
-                                        <Input type={"text"} placeholder={"Search products"} value={searchText} onChange={(e) => handleSearchResults(e.target.value)} data-cy="searchBarInput" />
-                                        <MagnifyingGlassIcon className="w-6 h-6 cursor-pointer absolute right-5" onClick={handleSubmitSearchResults} />
+                                        <label className="inline-flex w-full gap-2">
+                                            <span className="w-fit">Search Products:</span>
+                                            <Input type={"text"} placeholder={"Search products"} value={searchText} onChange={(e) => handleSearchResults(e.target.value)} data-cy="searchBarInput" />
+                                        </label>
+                                        <button type="button" aria-label="Search button" id="navSearchButton" onClick={handleSubmitSearchResults} className="cursor-pointer absolute right-4">
+                                        <MagnifyingGlassIcon className="size-6" aria-label="Icon of a magnifying glass" />
+                                        </button>
                                     </div>
                                 </form>
 
-                                <div className="overflow-scroll max-h-100 py-4">
+                                <div className="overflow-scroll rounded-lg max-h-100">
                                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 " id="searchResultsProducts">
 
                                         {loadingSearchResults ?

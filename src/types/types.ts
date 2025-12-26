@@ -22,6 +22,14 @@ export type CartProduct = Omit<Product, "sizes" | "colors" | "images"> & {
     priceId: string;
 };
 
+export interface TokenPayload {
+    _id: string,
+    isVerified: boolean,
+    email: string,
+    iat: string,
+    exp: number
+}
+
 export type Product = {
     imageURL: string | undefined;
     _id: string;

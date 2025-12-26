@@ -9,9 +9,7 @@ type Params = {
 export async function GET(request: NextRequest, { params }: { params: Promise<Params> }) {
 
     const { db } = await connectToDb();
-
     const { _id: userId } = await params;
-
     const product = await db.collection('products').findOne({ _id: new ObjectId(userId) });
 
     if (!product) {

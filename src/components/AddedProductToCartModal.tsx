@@ -17,7 +17,7 @@ export default function AddedProductToCartModal({ name, price, size, color, imag
 
     return (
         <div
-            className="bg-white w-full sm:w-120 h-150 sm:h-100 absolute z-51 right-0 top-[64px] p-8 shadow-xl fixed"
+            className="absolute bg-white rounded-l-xl w-full sm:w-120 h-150 sm:h-100 absolute z-51 right-0 top-[64px] p-8 shadow-xl fixed"
             role="dialog"
             aria-labelledby="modal-title"
             aria-modal="true"
@@ -46,7 +46,7 @@ export default function AddedProductToCartModal({ name, price, size, color, imag
                             <span className="font-bold">{name}</span>
                             <span>Color: {color}</span>
                             <span>Size: {size}</span>
-                            <span className="text-gray-500">${price}</span>
+                            <span className="">${price}</span>
                         </div>
                     </div>
                 </div>

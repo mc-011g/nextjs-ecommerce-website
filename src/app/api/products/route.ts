@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import { connectToDb } from "../db";
 
 export async function GET() {
-  const { db } = await connectToDb();
 
+  const { db } = await connectToDb();
   const products = await db.collection('products').find({}).toArray();
 
   if (!products) {

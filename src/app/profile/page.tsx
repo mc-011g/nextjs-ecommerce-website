@@ -1,7 +1,6 @@
 'use client';
 
 import Button from "@/components/Button";
-import Card from "@/components/Card";
 import Input from "@/components/Input";
 import { getUser } from "@/redux/selectors";
 import { fetchUserProfile } from "@/redux/thunks/fetchUserProfile";
@@ -13,7 +12,7 @@ import { logoutUser } from "@/redux/slices/userSlice";
 import { getTokenPayload } from "../auth/getTokenPayload";
 import { updateUserProfileThunk } from "@/redux/thunks/updateUserProfileThunk";
 import { sendForgotPasswordEmail } from "@/util/sendForgotPasswordEmail";
-import { User } from "@/types/types";
+import { TokenPayload, User } from "@/types/types";
 
 export default function ProfilePage() {
     const dispatch = useDispatch<AppDispatch>();
@@ -22,22 +21,23 @@ export default function ProfilePage() {
 
     const [error, setError] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [tokenPayload, setTokenPayload] = useState<TokenPayload | null>(null);
+    const [hasMounted, setHasMounted] = useState<boolean>(false);
 
     useEffect(() => {
-        const tokenPayload = getTokenPayload();
+        setHasMounted(true);
+        setTokenPayload(getTokenPayload());
+    }, []);
 
-        if (!tokenPayload) {
-            router.push("/");
-        }
-
-        if ((!user && tokenPayload) || (user && user.isVerified)) {
-            try {
+    useEffect(() => {
+        try {
+            if (tokenPayload) {
                 dispatch(fetchUserProfile(tokenPayload._id));
-            } catch (error) {
-                console.error(error);
             }
+        } catch (error) {
+            console.error(error);
         }
-    }, [dispatch, router, user]);
+    }, [dispatch, tokenPayload, user]);
 
     const [form, setForm] = useState<User | null>(null);
 
@@ -83,9 +83,9 @@ export default function ProfilePage() {
     }
 
     const handleLogout = () => {
+        router.replace("/");
         dispatch(logoutUser());
         localStorage.removeItem("token");
-        router.push("/");
     }
 
     const handleResetPassword = async () => {
@@ -99,78 +99,78 @@ export default function ProfilePage() {
         }
     }
 
+    if (!hasMounted || !tokenPayload || !user) {
+        return null;
+    }
+
     return (
 
-        <div className="mx-auto px-4 py-16 flex flex-col items-center justify-center h-[calc(100vh-64px)] bg-gray-100">
+        <main className="mx-auto px-4 flex flex-col items-center justify-center h-[calc(100vh-96px)]">
 
-            <Card>
-                <div className="flex justify-content-center">
-                    <div className="flex flex-col gap-4">
-                        <h2 className="mb-3 text-center text-3xl">Account Information</h2>
+            <div className="flex flex-col gap-4 w-full max-w-[512px] ">            
 
-                        <div className="flex flex-col my-3 gap-3">
-                            <form className="flex flex-col gap-3" onSubmit={(e) => { e.preventDefault(); handleSaveChanges() }}>
-                                <div className="text-truncate">
+                <h1 className="text-center font-bold text-3xl md:text-4xl lg:text-5xl mb-[24px]">Your Profile</h1>
 
-                                    <label>
-                                        <b>Email: </b>
-                                        <Input type="email" placeholder="Email" id="email" name="email"
-                                            value={form?.email || ""} onChange={handleInputChange} maxLength={60} required data-cy="emailInput" />
-                                    </label>
-                                </div>
+                <div className="flex flex-col my-3 gap-4">
+                    <form className="flex flex-col gap-4" onSubmit={(e) => { e.preventDefault(); handleSaveChanges() }}>
+                        <div className="text-truncate">
 
-                                <label>
-                                    <b>Phone: </b>
-                                    <Input type="tel" placeholder="Phone number" id="phoneNumber" name="phoneNumber"
-                                        value={form?.phoneNumber || ""} onChange={handleInputChange} maxLength={10} minLength={10} required data-cy="phoneNumberInput" />
-                                </label>
-
-                                <div className="flex gap-3 flex-wrap">
-                                    <label className="flex-1">
-                                        <b>First name:</b>
-                                        <Input type="text" placeholder="First name" id="firstName" name="firstName" minLength={1}
-                                            value={form?.firstName || ""} onChange={handleInputChange} maxLength={20} required data-cy="firstNameInput" />
-                                    </label>
-                                    <label className="flex-1">
-                                        <b>Last name:</b>
-                                        <Input type="text" placeholder="Last name" id="lastName" name="lastName" minLength={1}
-                                            value={form?.lastName || ""} onChange={handleInputChange} maxLength={20} required data-cy="lastNameInput" />
-                                    </label>
-                                </div>
-
-                                <div className="w-40">
-                                    <Button type="button" color="light" size="" outline="outline" id="handleResetPassword" name="handleResetPassword" onClick={handleResetPassword} data-cy="resetPasswordButton">
-                                        <div className="flex flex-row gap-4">
-                                            <span>Reset Password</span>
-                                        </div>
-                                    </Button>
-                                </div>
-
-                                {successMessage && <p className="text-green-500" aria-live="polite" data-cy="successMessage">{successMessage}</p>}
-
-                                {error && <p className="text-red-500" aria-live="polite" data-cy="errorMessage">{error}</p>}
-
-                                <div className="mt-5 flex gap-6 flex-col place-items-center">
-                                    <div className="flex flex-row gap-3 w-full sm:w-60">
-                                        <Button type="button" color="light" size="" outline="outline" onClick={handleReset} data-cy="resetButton">
-                                            Reset
-                                        </Button>
-                                        <Button type="submit" className="btn btn-dark mt-3"
-                                            name="saveButton" id="saveButton" color={`${changesMade ? 'dark' : 'light'}`} size={""} outline={"outline"} disabled={!changesMade} data-cy="saveButton">Save</Button>
-                                    </div>
-                                    <div className="w-full sm:w-60">
-                                        <Button type="button" color="light" size="" outline="outline" id="logoutButton" name="logoutButton" onClick={handleLogout} data-cy="logoutButton">
-                                            Logout
-                                        </Button>
-                                    </div>
-                                </div>
-
-                            </form>
+                            <label>
+                                Email:
+                                <Input type="email" placeholder="Email" id="email" name="email"
+                                    value={form?.email || ""} onChange={handleInputChange} maxLength={60} required data-cy="emailInput" />
+                            </label>
                         </div>
 
-                    </div>
-                </div >
-            </Card>
-        </div >
+                        <label>
+                            Phone Number:
+                            <Input type="tel" placeholder="Phone number" id="phoneNumber" name="phoneNumber"
+                                value={form?.phoneNumber || ""} onChange={handleInputChange} maxLength={10} minLength={10} required data-cy="phoneNumberInput" />
+                        </label>
+
+                        <div className="flex gap-4 flex-wrap">
+                            <label className="flex-1">
+                                First Name:
+                                <Input type="text" placeholder="First name" id="firstName" name="firstName" minLength={1}
+                                    value={form?.firstName || ""} onChange={handleInputChange} maxLength={20} required data-cy="firstNameInput" />
+                            </label>
+                            <label className="flex-1">
+                                Last Name:
+                                <Input type="text" placeholder="Last name" id="lastName" name="lastName" minLength={1}
+                                    value={form?.lastName || ""} onChange={handleInputChange} maxLength={20} required data-cy="lastNameInput" />
+                            </label>
+                        </div>
+
+                        <Button type="button" color="light" size="" outline="outline" id="handleResetPassword" name="handleResetPassword" onClick={handleResetPassword} data-cy="resetPasswordButton">
+                            <div className="flex flex-row gap-4">
+                                <span>Reset Password</span>
+                            </div>
+                        </Button>
+
+                        {successMessage && <p className="text-green-600" aria-live="polite" data-cy="successMessage">{successMessage}</p>}
+
+                        {error && <p className="text-red-600" aria-live="polite" data-cy="errorMessage">{error}</p>}
+
+                        <div className="mt-4 flex gap-4 flex-col place-items-center">
+                            <div className="flex flex-col sm:flex-row gap-2 w-full justify-center items-center">
+                                <Button type="button" color="light" size="large" outline="outline" onClick={handleReset} data-cy="resetButton">
+                                    Reset
+                                </Button>
+                                <Button type="submit" className="btn btn-dark"
+                                    name="saveButton" id="saveButton" color={"dark"} size={"large"} outline={"solid"} disabled={!changesMade} data-cy="saveButton">Save Changes</Button>
+                            </div>
+                            <div className="w-full">
+                                <Button type="button" color="light" size="" outline="outline" id="logoutButton" name="logoutButton" onClick={handleLogout} data-cy="logoutButton">
+                                    Logout
+                                </Button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+         
+            </div >
+            
+        </main >
     );
 }

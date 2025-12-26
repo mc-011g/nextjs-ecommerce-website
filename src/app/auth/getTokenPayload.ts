@@ -1,5 +1,9 @@
 export const getTokenPayload = () => {
 
+    if (typeof window === "undefined") {
+        return null;
+    }
+
     const token = localStorage.getItem("token");
 
     if (!token) { return null; }
@@ -7,6 +11,7 @@ export const getTokenPayload = () => {
     const getTokenPayload = (token: string) => {
         if (token) {
             const encodedPayload = token.split(".")[1];
+
             return JSON.parse(atob(encodedPayload));
         } else {
             return null;

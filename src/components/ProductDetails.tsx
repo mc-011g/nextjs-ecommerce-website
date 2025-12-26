@@ -107,10 +107,11 @@ export default function ProductDetails({ initialProduct }: { initialProduct: Pro
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <div className="container mx-auto px-4 my-12">
+            <main className="container px-4 lg:px-8 mx-auto py-[48px] md:py-[64px] lg:py-[96px] flex flex-col gap-8 md:gap-12 lg:gap-16">
+
                 {showProductAddedModal &&
-                    <div className="">
-                        <div className="w-[100vw] h-[100vh] opacity-50 bg-black top-0 left-0 z-10 absolute fixed" onClick={() => handleShowProductAddedModal(false)}></div>
+                    <>
+                        <div className="w-[100vw] h-[100vh] opacity-50 bg-black top-0 left-0 z-10 fixed " onClick={() => handleShowProductAddedModal(false)}></div>
                         <AddedProductToCartModal
                             name={selectedProductName}
                             price={selectedProductPrice}
@@ -120,37 +121,38 @@ export default function ProductDetails({ initialProduct }: { initialProduct: Pro
                             imageAlt={selectedProductName}
                             handleShowProductAddedModal={handleShowProductAddedModal}
                         />
-                    </div>
+                    </>
                 }
 
-                <div className="mb-3 lg:hidden">
-                    <h2 className="text-3xl" data-cy="productName">{product.name}</h2>
-                    <h4 className="text-2xl">${product.price}</h4>
+                <div className="mb-3 lg:hidden">             
+                    <h1 className="font-bold text-3xl md:text-4xl lg:text-5xl" data-cy="productName">{product.name}</h1>
+                    <p className="text-2xl md:text-3xl lg:text-4xl">${product.price}</p>             
                 </div>
 
-                <div className="flex flex-col lg:flex-row gap-6">
-                    <div className="flex flex-row gap-3 grow max-w-[650px]">
-                        <div className="flex gap-2 flex-col">
+                <div className="flex flex-col lg:flex-row gap-12">
+
+                    <div className="flex flex-col-reverse sm:flex-row gap-4 w-full h-full lg:w-1/2">
+
+                        <div className="grid grid-cols-4 gap-2 sm:flex sm:flex-col overflow-x-auto">
                             {product.images.map((imageURL, index) =>
-                                <div key={index}>
-                                    <div className="relative w-[60px] h-[60px] cursor-pointer">
-                                        <Image
-                                            src={imageURL.trim()}
-                                            onMouseOver={() => changeMainProductImage(imageURL.trim())}
-                                            className="rounded-lg"
-                                            alt={product.name}
-                                            fill
-                                            objectFit="cover"
-                                        />
-                                    </div>
+                                <div key={index} className="relative min-w-12 sm:min-w-16 aspect-square cursor-pointer">
+                                    <Image
+                                        src={imageURL.trim()}
+                                        onMouseOver={() => changeMainProductImage(imageURL.trim())}
+                                        className="rounded-xl"
+                                        alt={product.name}
+                                        fill
+                                        objectFit="cover"
+                                    />
                                 </div>
                             )}
                         </div>
-                        <div className="grow">
-                            <div className="relative min-w-[200px] aspect-square">
+
+                        <div className="flex-1">
+                            <div className="relative min-w-[192px] aspect-square">
                                 <Image
                                     src={mainProductImage !== '' ? mainProductImage : product.images[0].trimEnd()}
-                                    className="rounded-lg" alt={product.name}
+                                    className="rounded-xl" alt={product.name}
                                     fill
                                     objectFit="cover"
                                 />
@@ -158,20 +160,20 @@ export default function ProductDetails({ initialProduct }: { initialProduct: Pro
                         </div>
                     </div>
 
-                    <div className="flex flex-col">
-                        <div className="hidden lg:block mb-6">
-                            <h2 className="text-3xl">{product.name}</h2>
-                            <h4 className="text-2xl">${product.price}</h4>
+                    <div className="flex flex-col lg:w-1/2">
+                        <div className="hidden lg:block mb-8">
+                            <h1 className="font-bold text-3xl md:text-4xl lg:text-5xl mb-3" data-cy="productName">{product.name}</h1>
+                            <p className="text-2xl md:text-3xl lg:text-4xl">${product.price}</p>
                         </div>
 
-                        <div className="flex flex-col gap-2 mb-4">
+                        <div className="flex flex-col gap-4 mb-4">
                             <div>
                                 <b>Color: </b><span>{selectedProductColor}</span>
                                 <div className="flex flex-row gap-2 mt-2">
                                     {product.colors?.map(color =>
-                                        <button key={color} className={`rounded-lg w-[60px] h-[60px] ${selectedProductColor === color && 'border border-black'}`}>
-                                            <Image src={product.images[0].trimEnd()} onClick={() => setSelectedProductColor(color)}
-                                                className="rounded-lg w-full h-full object-cover" alt="Product" width={300} height={300} />
+                                        <button type="button" key={color} aria-label="Product color selection" className={`rounded-xl w-[64px] h-[64px] ${selectedProductColor === color && 'border border-black'}`} onClick={() => setSelectedProductColor(color)}>
+                                            <Image src={product.images[0].trimEnd()} 
+                                                className="rounded-xl w-full h-full object-cover" alt="Product" width={300} height={300} />
                                         </button>
                                     )}
                                 </div>
@@ -184,7 +186,7 @@ export default function ProductDetails({ initialProduct }: { initialProduct: Pro
                                         {product.sizes.map(sizeInfo =>
                                             <button
                                                 key={product._id + sizeInfo.size}
-                                                className={`border border-black w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer ${(selectedProductSize === sizeInfo.size) ? 'bg-black text-white hover:bg-black' : 'hover:bg-gray-300'}`}
+                                                className={`border border-black w-10 h-10 flex items-center justify-center rounded-xl cursor-pointer ${(selectedProductSize === sizeInfo.size) ? 'bg-black text-white hover:bg-black' : 'hover:bg-gray-300'}`}
                                                 onClick={() => { setSelectedProductSize(sizeInfo.size); setSelectedPriceId(sizeInfo.priceId); }}
                                                 aria-label={`Sizes filter for size ${sizeInfo.size}`}
                                                 data-cy="productSize"
@@ -195,7 +197,7 @@ export default function ProductDetails({ initialProduct }: { initialProduct: Pro
                                     </div>
                                 </fieldset>
                                 {error &&
-                                    <div className="text-red-500 mt-2" aria-live="polite">
+                                    <div className="text-red-600 mt-2" aria-live="polite">
                                         {error}
                                     </div>
                                 }
@@ -211,26 +213,29 @@ export default function ProductDetails({ initialProduct }: { initialProduct: Pro
                     </div>
                 </div>
 
-                <hr className="my-12" />
+                <hr />
 
-                <h2 className="text-2xl mb-4">Related products</h2>
-                <div className="pb-5 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:w-3/4 h-min">
-                    {relatedProducts?.map(product =>
-                        <Link
-                            key={product._id}
-                            href={`/products/${product._id}`}
-                            onClick={() => setMainProductImage('')}
-                            aria-label={`View details for related product: ${product.name}`}>
-                            <LargeProductCard
-                                name={product.name}
-                                price={product.price}
-                                imageURL={product.images[0]}
-                                alt={product.name}
-                            />
-                        </Link>
-                    )}
+                <div className="flex flex-col gap-8 w-full">
+                    <h2 className="text-xl sm:text-2xl">Related products</h2>
+                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 h-min w-full">
+                        {relatedProducts?.map(product =>
+                            <Link
+                                key={product._id}
+                                href={`/products/${product._id}`}
+                                onClick={() => setMainProductImage('')}
+                                aria-label={`View details for related product: ${product.name}`}>
+                                <LargeProductCard
+                                    name={product.name}
+                                    price={product.price}
+                                    imageURL={product.images[0]}
+                                    alt={product.name}
+                                />
+                            </Link>
+                        )}
+                    </div>
                 </div>
-            </div>
+
+            </main>
         </>
     );
 }

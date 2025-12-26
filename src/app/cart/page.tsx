@@ -1,7 +1,6 @@
 'use client';
 
 import Button from "@/components/Button";
-import Card from "@/components/Card";
 import CartProductCard from "@/components/CartProduct";
 import { getCart } from "@/redux/selectors";
 import { removeProductFromCart, updateProductFromCart } from "@/redux/slices/cartSlice";
@@ -54,71 +53,69 @@ export default function CartPage() {
     }
 
     return (
-        <div className="mx-auto px-4 flex flex-col items-center justify-center h-[calc(100%-64px)] bg-gray-50">
-            <div className="flex flex-col gap-4 h-full my-16 mx-auto md:flex-row w-full justify-center">
+        <main className="container px-4 lg:px-8 mx-auto py-[48px] h-full md:py-[64px] lg:py-[96px] flex flex-col gap-8 md:gap-12 lg:gap-16">
 
-                <div className="w-full md:w-[500px]">
-                    <Card>
-                        <div className="flex flex-col gap-3" aria-live="polite">
-                            <h4 className="mb-3 text-2xl"><b>Cart</b> ({cart.length} items)</h4>
-                            <hr />
-                            {cart.length > 0 ?
-                                <>
-                                    {cart?.map((product, index) => (
-                                        <div className={`mt-5 ${(cart.length > 0) ? 'mb-3' : ''} `} key={product._id + product.selectedSize} data-cy="cartProduct">
-                                            <CartProductCard
-                                                product={product}
-                                                handleUpdateProductQuanity={handleUpdateProductQuanity}
-                                                index={index}
-                                                handleRemoveItem={handleRemoveItem} />
-                                        </div>
-                                    ))}
-                                </> : <>There are no products in your cart.</>
-                            }
-                        </div>
-                    </Card>
+            <h1 className="font-bold text-3xl md:text-4xl lg:text-5xl">
+                <b>Cart</b>
+                <span className="font-normal text-gray-600"> ({cart.length} items)</span>
+            </h1>
+
+            <div className="flex flex-col gap-4 mx-auto md:flex-row w-full gap-12 h-full">
+
+                <div className="md:w-1/2">
+                    <div className="flex flex-col gap-4 max-w-[768px] h-full" aria-live="polite">
+                        {cart.length > 0 ?
+                            <>
+                                {cart?.map((product, index) => (
+                                    <div className={`${(cart.length > 0) ? '' : ''} `} key={product._id + product.selectedSize} data-cy="cartProduct">
+                                        <CartProductCard
+                                            product={product}
+                                            handleUpdateProductQuanity={handleUpdateProductQuanity}
+                                            index={index}
+                                            handleRemoveItem={handleRemoveItem} />
+                                    </div>
+                                ))}
+                            </> : <>There are no products in your cart.</>
+                        }
+                    </div>
                 </div>
 
-                <div className="w-full md:w-[300px]">
-                    <Card>
-                        <div className="flex flex-col">
-                            <h4 className="mb-3 text-2xl font-bold">Summary</h4>
-                            <hr />
+                <div className="md:w-1/2">       
+                    <div className="flex flex-col gap-4 max-w-[512px] bg-gray-100 p-4 rounded-xl">
 
-                            <div>
-                                <div className="my-5">
-                                    <div className="flex justify-between">
-                                        <div>Subtotal:</div>
-                                        <div>
-                                            ${summaryInfo.subtotal}
-                                        </div>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <div>Shipping:</div>
-                                        <div>{summaryInfo.shipping === 0 ? <>Free</> : <>{summaryInfo.shipping}</>}</div>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <div>Taxes:</div>
-                                        $0
-                                    </div>
-                                    <div className="flex justify-between font-bold">
-                                        <div aria-live="polite">Total:</div>
-                                        <div data-cy="cartTotal">${cartTotal}</div>
-                                    </div>
+                        <h2 className="font-bold text-2xl md:text-3xl lg:text-4xl border-b-1">Summary</h2>               
+
+                        <div className="flex flex-col gap-1">
+                            <div className="flex justify-between">
+                                <div>Subtotal:</div>
+                                <div>
+                                    ${summaryInfo.subtotal}
                                 </div>
-
-                                <Button color="dark" size="" outline="" className="" onClick={handleCheckoutButtonClick}
-                                    disabled={cart.length === 0 ? true : false}
-                                    aria-disabled={cart.length === 0 ? true : false}
-                                >
-                                    Checkout
-                                </Button>
+                            </div>
+                            <div className="flex justify-between">
+                                <div>Shipping:</div>
+                                <div>{summaryInfo.shipping === 0 ? <>Free</> : <>{summaryInfo.shipping}</>}</div>
+                            </div>
+                            <div className="flex justify-between">
+                                <div>Taxes:</div>
+                                $0
+                            </div>
+                            <div className="flex justify-between font-bold">
+                                <div aria-live="polite">Total:</div>
+                                <div data-cy="cartTotal">${cartTotal}</div>
                             </div>
                         </div>
-                    </Card>
+
+                        <Button color="dark" size="large" outline="" className="" onClick={handleCheckoutButtonClick}
+                            disabled={cart.length === 0 ? true : false}
+                            aria-disabled={cart.length === 0 ? true : false}
+                        >
+                            Checkout
+                        </Button>              
+                    </div>            
                 </div>
 
             </div>
-        </div>
+        </main>
     );
 }

@@ -14,7 +14,7 @@ export default function LargeProductCard({ name, price, imageURL, alt }:
                     alt={alt}
                     fill
                     sizes="85vw, 90vw, 95vw"
-                    className="rounded-xl object-cover h-full w-full" />
+                    className="rounded-t-xl object-cover h-full w-full" />
             </div>
             <div className="p-4">
                 <div className="font-bold font-semibold">{name}</div>

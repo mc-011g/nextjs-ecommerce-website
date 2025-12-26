@@ -5,7 +5,6 @@ import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import Button from "@/components/Button";
-import Card from "@/components/Card";
 import type { AppDispatch } from "@/components/ReduxProvider";
 import { useDispatch } from "react-redux";
 import { loginUser } from "@/redux/thunks/loginUser";
@@ -56,60 +55,60 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="mx-auto px-4 flex flex-col items-center justify-center h-[calc(100vh-64px)] bg-gray-100">
+        <main className="container mx-auto px-4 flex flex-col items-center justify-center py-[48px] md:py-[64px] lg:py-[96px] h-[calc(100vh-96px-160px)] sm:h-[calc(100vh-96px)]">
 
-            <Card>
-                <div className="flex flex-col gap-3">
-                    <h1 className="text-3xl text-center">Login</h1>
+            <div className="flex flex-col gap-4 w-full h-fit max-w-[512px]">
 
-                    <form className="flex flex-col gap-3 mt-3" onSubmit={(e) => { e.preventDefault(); onSubmit(e); }}>
-                        <div className="flex flex-col gap-3">
+                <h1 className="text-center font-bold text-3xl md:text-4xl lg:text-5xl mb-[24px]">Login</h1>
 
+                <form className="flex flex-col gap-4 h-full w-full" onSubmit={(e) => { e.preventDefault(); onSubmit(e); }}>
+                    <div className="flex flex-col gap-4">
+
+                        <label>
+                            Email:
+                            <Input type="email" placeholder="Email" id="email" name="email" data-cy="emailInput"
+                                value={form.email} onChange={onFormInputChange} required maxLength={60} />
+                        </label>
+
+                        <div className="relative">
                             <label>
-                                Email
-                                <Input type="email" placeholder="Email" id="email" name="email" data-cy="emailInput"
-                                    value={form.email} onChange={onFormInputChange} required maxLength={60} />
-                            </label>
-
-                            <div className="relative">
-                                <label>
-                                    Password
-                                    <div className="relative flex align-items-center">
-                                        <Input type={`${passwordVisibilityToggle === false ? 'password' : 'text'}`} placeholder="Password" id="password" name="password"
-                                            value={form.password} onChange={onFormInputChange} required data-cy="passwordInput" minLength={8} />
-                                    </div>
-                                </label>
-                                {passwordVisibilityToggle ?
-                                    <EyeIcon className="w-6 h-6 z-10 absolute right-3 top-[44px] transform -translate-y-1/2 cursor-pointer" onClick={() => handlePasswordVisibilityToggle()} />
-                                    :
-                                    <EyeSlashIcon className="w-6 h-6 z-10 absolute right-3 top-[44px] transform -translate-y-1/2 cursor-pointer" onClick={() => handlePasswordVisibilityToggle()} />
-                                }
-                            </div>
-
-                            {errorMessage &&
-                                <div className="text-red-500" aria-live="polite" data-cy="errorMessage">                            
-                                    {errorMessage}
+                                Password:
+                                <div className="relative flex align-items-center">
+                                    <Input type={`${passwordVisibilityToggle === false ? 'password' : 'text'}`} placeholder="Password" id="password" name="password"
+                                        value={form.password} onChange={onFormInputChange} required data-cy="passwordInput" minLength={8} />
                                 </div>
+                            </label>
+                            {passwordVisibilityToggle ?
+                                <EyeIcon className="w-6 h-6 z-10 absolute right-3 top-[44px] transform -translate-y-1/2 cursor-pointer" onClick={() => handlePasswordVisibilityToggle()} />
+                                :
+                                <EyeSlashIcon className="w-6 h-6 z-10 absolute right-3 top-[44px] transform -translate-y-1/2 cursor-pointer" onClick={() => handlePasswordVisibilityToggle()} />
                             }
                         </div>
 
-                        <div className="flex justify-center gap-2 mt-4">
-                            <div className="flex-1">
-                                <Button type="submit" color="dark" size="" outline="" data-cy="loginButton">Login</Button>
+                        {errorMessage &&
+                            <div className="text-red-600" aria-live="polite" data-cy="errorMessage">
+                                {errorMessage}
                             </div>
-                            <Link href="/register" className="flex-1">
-                                <Button type="button" color="light" size="" outline="outline" data-cy="registerButton">Register</Button>
-                            </Link>
-                        </div>
-                    </form>
+                        }
+                    </div>
 
-                    <div className="d-flex justify-content-center text-center">
-                        <Link href="/forgotPassword" className="font-semibold text-gray-600 hover:text-gray-700 focus:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2" data-cy="forgotPasswordLink">
-                            Forgot password?
+                    <div className="flex justify-center gap-2 mt-4">
+                        <div className="">
+                            <Button type="submit" color="dark" size="large" outline="" data-cy="loginButton">Login</Button>
+                        </div>
+                        <Link href="/register" className="">
+                            <Button type="button" color="light" size="large" outline="outline" data-cy="registerButton">Register</Button>
                         </Link>
                     </div>
+                </form>
+
+                <div className="d-flex justify-content-center text-center">
+                    <Link href="/forgotPassword" className="text-gray-600 hover:text-gray-950 focus:text-gray-950 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2" data-cy="forgotPasswordLink">
+                        Forgot password?
+                    </Link>
                 </div>
-            </Card>
-        </div>
+            </div>
+
+        </main>
     );
 };

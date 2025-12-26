@@ -21,17 +21,23 @@ export default async function HomePage() {
         <>
             <HeroBanner />
 
-            <div className="container mx-auto">
-                <h1 className="text-center text-2xl">Shop by Category</h1>
-                <div className="flex flex-wrap gap-4 justify-center mt-4 mb-5">
-                    <CategoryBlock categoryName="athletic" content="Athletic Shoes" imageURL="https://reactecommerceapp.blob.core.windows.net/images/martin-katler-1kOIl9vu4cY-unsplash(1).jpg" />
-                    <CategoryBlock categoryName="boots" content="Boots" imageURL="https://reactecommerceapp.blob.core.windows.net/images/pexels-1242304473-30156657.jpg" />
-                    <CategoryBlock categoryName="shoes" content="Shoes" imageURL="https://reactecommerceapp.blob.core.windows.net/images/mojtaba-fahiminia-t4g1gctAaKk-unsplash(1).jpg" />
+            <main className="container px-4 lg:px-8 mx-auto py-[48px] md:py-[64px] lg:py-[96px] flex flex-col gap-8 md:gap-12 lg:gap-16">
+
+                <div className="flex flex-col gap-4 md:gap-6">
+
+                    <h1 className="font-bold text-2xl md:text-3xl lg:text-4xl">Shop Categories</h1>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 justify-center">
+                        <CategoryBlock categoryName="athletic" content="Athletic Shoes" imageURL="https://reactecommerceapp.blob.core.windows.net/images/martin-katler-1kOIl9vu4cY-unsplash(1).jpg" />
+                        <CategoryBlock categoryName="boots" content="Boots" imageURL="https://reactecommerceapp.blob.core.windows.net/images/pexels-1242304473-30156657.jpg" />
+                        <CategoryBlock categoryName="shoes" content="Shoes" imageURL="https://reactecommerceapp.blob.core.windows.net/images/mojtaba-fahiminia-t4g1gctAaKk-unsplash(1).jpg" />
+                    </div>
                 </div>
 
-                <div>
-                    <h2 className="text-center text-2xl">Trending</h2>
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4 mb-5">
+                <div className="flex flex-col gap-4 md:gap-6">
+                    <h2 className="font-bold text-2xl md:text-3xl lg:text-4xl">Trending</h2>
+
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                         {products.slice(0, 4).map(product => (
                             <Link href={`/products/${(product._id)}`}
                                 key={product._id}
@@ -47,9 +53,11 @@ export default async function HomePage() {
                     </div>
                 </div>
 
-                <div>
-                    <h2 className="text-center text-2xl">New Products</h2>
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4 mb-5">
+                <div className="flex flex-col gap-4 md:gap-6">
+
+                    <h2 className="font-bold text-2xl md:text-3xl lg:text-4xl">New Products</h2>
+
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                         {products.slice(4, 8).map(product => (
                             <Link href={`/products/${(product._id)}`}
                                 key={product._id}
@@ -64,7 +72,7 @@ export default async function HomePage() {
                         ))}
                     </div>
                 </div>
-            </div>
+            </main>
         </>
     );
 }

@@ -24,7 +24,7 @@
     "jsonwebtoken": "^9.0.2",
     "lodash.debounce": "^4.0.8",
     "mongodb": "^6.15.0",
-    "next": "15.2.8",
+    "next": "16.0.10",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-redux": "^9.2.0",

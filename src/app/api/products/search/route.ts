@@ -2,10 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectToDb } from "../../db";
 
 export async function GET(request: NextRequest) {
+
   const { db } = await connectToDb();
-
   const { searchParams } = new URL(request.url);
-
   const searchQuery = searchParams.get("search");
 
   if (!searchQuery) {

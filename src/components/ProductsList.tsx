@@ -107,24 +107,24 @@ export default function ProductsList({ products, heading }: { products: Product[
     }, [filterColors, filterPrices, filterSizes, filterCategories, updatedProducts]);
 
     return (
-        <div className="container mx-auto px-4">
+        <main className="container px-4 lg:px-8 mx-auto py-[48px] md:py-[64px] lg:py-[96px] flex flex-col gap-8 md:gap-12 lg:gap-16">
 
-            <h1 className="my-5 d-flex text-2xl">
-                <div className="me-2 text-2xl">
+            <h1 className="font-bold text-3xl md:text-4xl lg:text-5xl inline-flex gap-2">
+                <div className="">
                     {heading}
                 </div>
-                ({updatedProducts.length})
+                <span className="font-normal text-gray-600"> ({updatedProducts.length})</span>
             </h1>
 
-            <div className="flex flex-col sm:flex-row gap-4 mt-4 mb-5 w-full">
-                <div className="flex flex-col gap-4 w-full sm:w-1/4">
-                    <h2 className="text-lg">Filters</h2>
-                    <hr />
+            <div className="flex flex-col sm:flex-row gap-4 md:gap-[48px] w-full">
 
-                    <div className="mt-4 mb-5 flex sm:flex-col gap-4 flex-wrap">
+                <div className="flex flex-col gap-8 w-full sm:w-1/4">
+                    <h2 className="text-2xl font-bold border border-x-0 border-t-0 border-b-1">Filters</h2>
+
+                    <div className="flex sm:flex-col gap-8 flex-wrap mb-4">
                         {!heading.startsWith("All") || !heading.startsWith("Search") &&
                             <fieldset className="flex flex-col">
-                                <legend className="font-bold">Category</legend>
+                                <legend className="text-2xl">Category</legend>
                                 <div className="flex mt-3 flex-col" data-cy="categoryFilters">
                                     {categories.map(category =>
                                         <label key={category}>
@@ -141,7 +141,7 @@ export default function ProductsList({ products, heading }: { products: Product[
                             </fieldset>
                         }
                         <fieldset className="flex flex-col">
-                            <legend className="font-bold">Price</legend>
+                            <legend className="text-2xl">Price</legend>
                             <div className="flex mt-3 flex-col" data-cy="priceFilters">
                                 {priceRanges.map((priceRange, index) =>
                                     <label key={index}>
@@ -157,13 +157,13 @@ export default function ProductsList({ products, heading }: { products: Product[
                             </div>
                         </fieldset>
                         <fieldset className="flex flex-col">
-                            <legend className="font-bold">Size</legend>
+                            <legend className="text-2xl">Size</legend>
                             <div className="flex mt-3 flex-wrap gap-2" data-cy="sizeFilters">
                                 {sizes.map(size =>
                                     <button
                                         key={size}
                                         data-cy="sizeDiv"
-                                        className={`border w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer hover:bg-gray-300 
+                                        className={`border w-10 h-10 flex items-center justify-center rounded-xl cursor-pointer hover:bg-gray-300 
                                             ${filterSizes.find(item => item === size) && 'bg-black text-white'}`}
                                         onClick={() => handleSizeFilter(size)}
                                         aria-label={`Sizes filter for ${size}`}
@@ -174,7 +174,7 @@ export default function ProductsList({ products, heading }: { products: Product[
                             </div>
                         </fieldset>
                         <fieldset className="flex flex-col">
-                            <legend className="font-bold">Color</legend>
+                            <legend className="text-2xl">Color</legend>
                             <div className="flex mt-3 flex-col" data-cy="colorFilters">
                                 {colors.map(color =>
                                     <label key={color}>
@@ -193,11 +193,11 @@ export default function ProductsList({ products, heading }: { products: Product[
                     </div>
                 </div>
 
-                <div className="pb-5 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:w-3/4 h-min" aria-live="polite">
+                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:w-3/4 h-min" aria-live="polite">
                     {(!filtersSelected() && updatedProducts.length > 0) && updatedProducts.map((product: Product) => (
                         <Link href={`/products/${(product._id)}`}
                             key={product._id}
-                            className='product my-3' data-cy="searchResultsPageProduct">
+                            className='' data-cy="searchResultsPageProduct">
                             <LargeProductCard
                                 name={product.name}
                                 price={product.price}
@@ -210,7 +210,7 @@ export default function ProductsList({ products, heading }: { products: Product[
                     {(filtersSelected() && filteredProducts.length > 0) && filteredProducts.map((product: Product) => (
                         <Link href={`/products/${(product._id)}`}
                             key={product._id}
-                            className='product my-3'>
+                            className=''>
                             <LargeProductCard
                                 name={product.name}
                                 price={product.price}
@@ -223,6 +223,6 @@ export default function ProductsList({ products, heading }: { products: Product[
                     {(filtersSelected() && filteredProducts.length === 0) && <p aria-live="polite">No products matching the selected filters.</p>}
                 </div>
             </div>
-        </div >
+        </main >
     );
 }

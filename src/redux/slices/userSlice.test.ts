@@ -1,4 +1,3 @@
-
 import { User } from "../../types/types";
 import { userSlice, initializeUser, logoutUser, updateUserProfile } from "./userSlice";
 import { ObjectId } from "mongodb";

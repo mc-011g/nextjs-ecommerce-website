@@ -8,9 +8,7 @@ type Params = {
 export async function GET(request: NextRequest, { params }: { params: Promise<Params> }) {
 
   const { db } = await connectToDb();
-
   const { categoryName } = await params;
-
   const validCategories = ["shoes", "boots", "athletic"];
 
   if (!validCategories.includes(categoryName.toLocaleLowerCase())) {

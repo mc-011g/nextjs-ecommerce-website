@@ -1,8 +1,6 @@
-
 import { cartSlice, addProductToCart, initializeCart, removeProductFromCart, updateProductFromCart } from "./cartSlice";
 import { ObjectId } from "mongodb";
 import { CartProduct } from "../../../src/types/types";
-
 
 describe("cartSlice", () => {
     beforeEach(() => {

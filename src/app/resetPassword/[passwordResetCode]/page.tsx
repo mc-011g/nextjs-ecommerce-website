@@ -1,7 +1,6 @@
 'use client';
 
 import Button from "@/components/Button";
-import Card from "@/components/Card";
 import Input from "@/components/Input";
 import PasswordResetFail from "@/components/PasswordResetFail";
 import { PasswordResetSuccess } from "@/components/PasswordResetSuccess";
@@ -46,51 +45,51 @@ export default function ResetPassword() {
     if (isFailure) return <PasswordResetFail />
 
     return (
-        <div className="mx-auto px-4 flex flex-col items-center justify-center h-[calc(100vh-64px)] bg-gray-100">
-            <Card>
-                <div className="flex flex-col gap-3 w-full">
+        <main className="px-4 sm:px-8 sm:h-[calc(100vh-96px-96px)] h-[calc(100vh-96px-160px)] flex items-center justify-center">
 
-                    <div className="text-center">
-                        <h1 className="text-2xl mb-4">Reset Password</h1>
-                        <p>Please enter a new password.</p>
-                    </div>
 
-                    <div className="relative">
-                        <label className="w-full">
-                            Password
-                            <Input type={`${passwordVisibilityToggle ? 'text' : 'password'}`} placeholder="New Password" value={password} onChange={(e) => setPassword(e.target.value)} data-cy="newPasswordInput" required />
-                        </label>
-                        {passwordVisibilityToggle ?
-                            <EyeIcon className="w-6 h-6 z-10 absolute right-3 top-[44px] transform -translate-y-1/2 cursor-pointer" onClick={() => handlePasswordVisibilityToggle()} />
-                            :
-                            <EyeSlashIcon className="w-6 h-6 z-10 absolute right-3 top-[44px] transform -translate-y-1/2 cursor-pointer" onClick={() => handlePasswordVisibilityToggle()} />
-                        }
-                    </div>
+            <div className="flex flex-col gap-4 w-full max-w-[512px]" aria-live="polite">
 
-                    <div className="relative">
-                        <label className="w-full">
-                            Confirm Password
-                            <Input type={`${confirmPasswordVisibilityToggle ? 'text' : 'password'}`} placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} data-cy="newConfirmPasswordInput" required />
-                        </label>
-                        {confirmPasswordVisibilityToggle ?
-                            <EyeIcon className="w-6 h-6 z-10 absolute right-3 top-[44px] transform -translate-y-1/2 cursor-pointer" onClick={() => handleConfirmPasswordVisibilityToggle()} />
-                            :
-                            <EyeSlashIcon className="w-6 h-6 z-10 absolute right-3 top-[44px] transform -translate-y-1/2 cursor-pointer" onClick={() => handleConfirmPasswordVisibilityToggle()} />
-                        }
-                    </div>
+                <h1 className="text-2xl md:text-3xl lg:text-4xl">Reset Password</h1>
 
-                    {password !== confirmPassword &&
-                        <span className="text-left text-red-500" aria-live="polite">Passwords must match.</span>
+                <p className="text-gray-600">Please enter a new password.</p>
+
+                <div className="relative">
+                    <label className="w-full">
+                        Password
+                        <Input type={`${passwordVisibilityToggle ? 'text' : 'password'}`} placeholder="New Password" value={password} onChange={(e) => setPassword(e.target.value)} data-cy="newPasswordInput" required />
+                    </label>
+                    {passwordVisibilityToggle ?
+                        <EyeIcon className="w-6 h-6 z-10 absolute right-3 top-[44px] transform -translate-y-1/2 cursor-pointer" onClick={() => handlePasswordVisibilityToggle()} />
+                        :
+                        <EyeSlashIcon className="w-6 h-6 z-10 absolute right-3 top-[44px] transform -translate-y-1/2 cursor-pointer" onClick={() => handlePasswordVisibilityToggle()} />
                     }
-
-                    <Button size="large" color="dark" outline=""
-                        onClick={handleResetPassword}
-                        disabled={!password || !confirmPassword || password !== confirmPassword}
-                        data-cy="passwordResetButton">
-                        Reset Password
-                    </Button>
                 </div>
-            </Card >
-        </div>
+
+                <div className="relative">
+                    <label className="w-full">
+                        Confirm Password
+                        <Input type={`${confirmPasswordVisibilityToggle ? 'text' : 'password'}`} placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} data-cy="newConfirmPasswordInput" required />
+                    </label>
+                    {confirmPasswordVisibilityToggle ?
+                        <EyeIcon className="w-6 h-6 z-10 absolute right-3 top-[44px] transform -translate-y-1/2 cursor-pointer" onClick={() => handleConfirmPasswordVisibilityToggle()} />
+                        :
+                        <EyeSlashIcon className="w-6 h-6 z-10 absolute right-3 top-[44px] transform -translate-y-1/2 cursor-pointer" onClick={() => handleConfirmPasswordVisibilityToggle()} />
+                    }
+                </div>
+
+                {password !== confirmPassword &&
+                    <span className="text-left text-red-600" aria-live="polite">Passwords must match.</span>
+                }
+
+                <Button size="large" color="dark" outline=""
+                    onClick={handleResetPassword}
+                    disabled={!password || !confirmPassword || password !== confirmPassword}
+                    data-cy="passwordResetButton">
+                    Reset Password
+                </Button>
+            </div>
+  
+        </main>
     );
 }

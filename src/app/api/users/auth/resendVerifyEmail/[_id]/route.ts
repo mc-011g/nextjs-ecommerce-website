@@ -15,7 +15,6 @@ export async function PUT(request: Request, { params }: { params: Promise<Params
 
     try {
         const { db } = await connectToDb();
-
         const result = await db.collection('users').findOne({ _id: new ObjectId(userId) });
 
         if (!result) {

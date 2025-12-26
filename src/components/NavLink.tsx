@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function NavLink({ link, children, ...props }: { link: string, children: React.ReactNode, }) {
+export default function NavLink({ link, children, ...props }: { link: string, onClick?: () => void, children: React.ReactNode, }) {
 
     return (
         <Link

@@ -1,11 +1,7 @@
 'use client';
 
-import {
-    useEffect,
-    useState,
-} from "react";
+import { useEffect, useState } from "react";
 
-import Card from "@/components/Card";
 import Button from "@/components/Button";
 import { resendVerifyEmail } from "@/util/resendVerifyEmail";
 
@@ -37,26 +33,27 @@ export default function ResendVerifyEmail() {
     }
 
     return (
-        <div className="mx-auto px-4 flex flex-col place-items-center justify-center h-[calc(100vh-64px)] bg-gray-100">
-            <Card>
-                <div className="flex flex-col gap-3 place-items-center">
-                    <h1 className="text-3xl text-center">Please verify your email</h1>
+      <main className="px-4 lg:px-8 sm:h-[calc(100vh-96px-96px)] h-[calc(100vh-96px-160px)] flex items-center justify-center">
 
-                    <p>To complete registration, please click the button below to get a email verification link sent to your inbox.</p>
+            <div className="flex flex-col gap-4 w-full max-w-[512px]">
 
-                    {errorMessage &&
-                        <div className="text-red-500" aria-live="polite">{errorMessage}</div>
-                    }
+                <h1 className="text-2xl md:text-3xl lg:text-4xl">Please Verify Your Email</h1>
 
-                    {!showSentMessage ? (
-                        <Button type="button" color="dark" size="" outline="" onClick={() => handleResendVerifyEmail()} data-cy="resendVerifyEmailButton">
-                            Resend Verification Email
-                        </Button>
-                    ) : (
-                        <p className="text-green-500" aria-live="polite" data-cy="sentVerifyEmailMessage">A new verification email was sent to your inbox.</p>
-                    )}
-                </div>
-            </Card>
-        </div>
+                <p className="text-gray-600">To complete registration, please click the button below to get a email verification link sent to your inbox.</p>
+
+                {errorMessage &&
+                    <div className="text-red-600" aria-live="polite">{errorMessage}</div>
+                }
+
+                {!showSentMessage ? (
+                    <Button type="button" color="dark" size="large" outline="" onClick={() => handleResendVerifyEmail()} data-cy="resendVerifyEmailButton">
+                        Resend Verification Email
+                    </Button>
+                ) : (
+                    <p className="text-green-600" aria-live="polite" data-cy="sentVerifyEmailMessage">A new verification email was sent to your inbox.</p>
+                )}
+            </div>
+
+        </main>
     );
 }
